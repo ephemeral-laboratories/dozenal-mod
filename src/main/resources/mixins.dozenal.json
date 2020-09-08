@@ -1,0 +1,11 @@
+{
+  "package": "garden.ephemeral.minecraft.dozenal.mixins",
+  "minVersion": "0",
+  "mixins": [],
+  "client": [
+    "MixinFontRenderer"
+  ],
+  "server": [],
+  "refmap": "mixins.dozenal.refmap.json",
+  "required": true
+}

@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+license="WTFPL"
+
+[[mods]]
+modId="dozenal"
+version="${file.jarVersion}"
+isplayName="Dozenal"
+
+description='''
+Applies dozenal formatting to numeric values.
+'''
