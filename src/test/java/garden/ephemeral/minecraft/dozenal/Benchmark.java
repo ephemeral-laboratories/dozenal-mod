@@ -17,7 +17,7 @@ public class Benchmark {
             });
         });
 
-        CachingStringMangler cachingMangler = new CachingStringMangler();
+        CachingMangler cachingMangler = new CachingMangler();
         time("Caching mangler", () -> {
             StringManglerTest.realExamples().forEach(arguments -> {
                 String input = (String) arguments.get()[0];
