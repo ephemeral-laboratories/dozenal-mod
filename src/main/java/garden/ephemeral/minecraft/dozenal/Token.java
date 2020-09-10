@@ -31,22 +31,4 @@ class Token {
     public String toString() {
         return "Token<" + type + "," + text + ">";
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof Token)) {
-            return false;
-        }
-        Token other = (Token) obj;
-        return type.equals(other.type) &&
-                text.equals(other.text);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, text);
-    }
 }
