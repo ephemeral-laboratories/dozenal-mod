@@ -32,6 +32,19 @@ public class StringManglerTest {
         );
     }
 
+    public static Stream<Arguments> scientificExamples() {
+        return Stream.of(
+                arguments("0k", "0;0n"), // weird edge case but OK
+                arguments("23k", "1;14q"),
+                arguments("23K", "1;14q"),
+                arguments("23.2k", "1;15q"),
+                arguments("23M", "7;85h"),
+                arguments("23.4M", "7;↊0h"),
+                arguments("23G", "4;56e"),
+                arguments("23.6G", "4;6↋e")
+        );
+    }
+
     public static Stream<Arguments> realExamples() {
         return Stream.of(
                 // Inventory tooltips
@@ -77,7 +90,7 @@ public class StringManglerTest {
     }
 
     @ParameterizedTest
-    @MethodSource({"trivialExamples", "basicExamples", "realExamples"})
+    @MethodSource({"trivialExamples", "basicExamples", "scientificExamples", "realExamples"})
     public void testMangling(String input, String expectedResult) {
         StringMangler mangler = new StringMangler();
         String result = mangler.mangle(input);

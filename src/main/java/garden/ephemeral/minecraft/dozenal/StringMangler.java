@@ -1,6 +1,7 @@
 package garden.ephemeral.minecraft.dozenal;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import garden.ephemeral.dozenal.DozenalNumberFormatProvider;
 
 import java.text.NumberFormat;
@@ -12,6 +13,18 @@ import java.util.stream.Collectors;
  * Mangles numeric values in strings into base 12.
  */
 public class StringMangler {
+    private static final ImmutableMap<String, Integer> SI_MULTIPLIERS = ImmutableMap.of(
+            "k", 1_000,
+            "K", 1_000,
+            "M", 1_000_000,
+            "G", 1_000_000_000
+    );
+    private static final char[] SDN_ABBREVIATIONS = {
+            'n', 'u', 'b', 't', 'q', 'p', 'h', 's', 'o', 'e', 'd', 'l'
+    };
+
+    private static final double LOG_12 = Math.log(12);
+
     private final StringScanner scanner = new StringScanner();
     private final NumberFormat integerFormat;
     private final NumberFormat numberFormat;
@@ -63,6 +76,26 @@ public class StringMangler {
                 return percentFormat.format(value);
             }
 
+            case SCIENTIFIC: {
+                // Chop units off the end
+                String unit = text.substring(text.length() - 1);
+                text = text.substring(0, text.length() - 1);
+                double value = Double.parseDouble(text) * SI_MULTIPLIERS.get(unit);
+                int fractionalSeparator = text.indexOf(".");
+                // Conventionally many mods chop the .0 off the end of scientific
+                // numbers which is annoying but we'll deal with it here.
+                // If it looks like 23.1k or 23k then desired precision is 2.
+                int precision = fractionalSeparator < 0 ?
+                        text.length() :
+                        text.length() - 2;
+                numberFormat.setMinimumFractionDigits(precision);
+                numberFormat.setMaximumFractionDigits(precision);
+                int exponent = value == 0 ? 0 : (int) Math.floor(Math.log(value) / LOG_12);
+                String exponentSymbol = exponentSymbolFor(exponent);
+                value /= Math.pow(12, exponent);
+                return numberFormat.format(value) + exponentSymbol;
+            }
+
             case TEXT:
             case SEPARATOR:
                 return text;
@@ -70,5 +103,26 @@ public class StringMangler {
             default:
                 throw new IllegalStateException("Missing case: " + token.getType());
         }
+    }
+
+    /**
+     * Generates an SDN abbreviation for the given exponent.
+     *
+     * @param exponent the exponent.
+     * @return the SDN abbreviation thereof.
+     */
+    private String exponentSymbolFor(int exponent) {
+        StringBuilder builder = new StringBuilder();
+        while (exponent > 0) {
+            int digit = exponent % 12;
+            builder.append(SDN_ABBREVIATIONS[digit]);
+            exponent /= 12;
+        }
+        if (builder.length() == 0) {
+            builder.append(SDN_ABBREVIATIONS[0]);
+        } else {
+            builder.reverse();
+        }
+        return builder.toString();
     }
 }

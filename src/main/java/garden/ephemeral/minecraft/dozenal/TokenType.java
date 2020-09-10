@@ -6,4 +6,5 @@ public enum TokenType {
     NUMBER,
     INTEGER,
     PERCENTAGE,
+    SCIENTIFIC
 }

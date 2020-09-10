@@ -11,6 +11,7 @@ public class StringScanner {
     private final Pattern integer = Pattern.compile("-?\\d+");
     private final Pattern number = Pattern.compile("-?\\d+\\.\\d+");
     private final Pattern percentage = Pattern.compile("-?\\d+(?:\\.\\d+)?%");
+    private final Pattern scientific = Pattern.compile("-?\\d+(?:\\.\\d+)?[kKMG]");
 
     public ImmutableList<Token> scan(String input) {
         ImmutableList.Builder<Token> builder = ImmutableList.builder();
@@ -36,6 +37,8 @@ public class StringScanner {
             return TokenType.SEPARATOR;
         } else if (percentage.matcher(token).matches()) {
             return TokenType.PERCENTAGE;
+        } else if (scientific.matcher(token).matches()) {
+            return TokenType.SCIENTIFIC;
         } else if (number.matcher(token).matches()) {
             return TokenType.NUMBER;
         } else if (integer.matcher(token).matches()) {
