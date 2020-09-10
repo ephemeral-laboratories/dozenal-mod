@@ -1,7 +1,6 @@
 package garden.ephemeral.minecraft.dozenal;
 
-import com.google.common.collect.ImmutableList;
-
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,44 +10,39 @@ class StringScanner {
             "\\d+" +
             "(" +
             "(?<fraction>\\.\\d+)?" +
-            "(?<tail>[kKMG%])?" +
+            "(?<suffix>[kKMG%])?" +
             "(?![._\\-\\d])" +
             "|" +
             "(?![_\\-\\d])" +
             ")",
             Pattern.COMMENTS);
 
-    ImmutableList<Token> scan(String input) {
-        ImmutableList.Builder<Token> builder = ImmutableList.builder();
-
+    void scan(String input, BiConsumer<String, TokenType> consumer) {
         Matcher matcher = target.matcher(input);
         int lastEndPosition = 0;
         while (matcher.find(lastEndPosition)) {
             if (matcher.start() > lastEndPosition) {
-                builder.add(new Token(TokenType.TEXT, input.substring(lastEndPosition, matcher.start())));
+                consumer.accept(input.substring(lastEndPosition, matcher.start()), TokenType.TEXT);
             }
-            String tokenText = matcher.group();
-            builder.add(new Token(categoriseToken(matcher), tokenText));
+            consumer.accept(matcher.group(), categoriseToken(matcher));
             lastEndPosition = matcher.end();
         }
         if (lastEndPosition < input.length()) {
-            builder.add(new Token(TokenType.TEXT, input.substring(lastEndPosition)));
+            consumer.accept(input.substring(lastEndPosition), TokenType.TEXT);
         }
-
-        return builder.build();
     }
 
     private TokenType categoriseToken(Matcher matcher) {
         String fraction = matcher.group("fraction");
-        String tail = matcher.group("tail");
-        if (tail == null) {
+        String suffix = matcher.group("suffix");
+        if (suffix == null) {
             if (fraction == null) {
                 return TokenType.INTEGER;
             } else {
                 return TokenType.NUMBER;
             }
         } else {
-            if ("%".equals(tail)) {
+            if ("%".equals(suffix)) {
                 return TokenType.PERCENTAGE;
             } else {
                 return TokenType.SCIENTIFIC;
