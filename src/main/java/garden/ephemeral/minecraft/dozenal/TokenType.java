@@ -5,13 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import java.text.NumberFormat;
 
 enum TokenType {
-    SEPARATOR {
-        @Override
-        String mangle(String text) {
-            return text;
-        }
-    },
-
     TEXT {
         @Override
         String mangle(String text) {
@@ -38,6 +31,9 @@ enum TokenType {
             long value = Long.parseLong(text);
             NumberFormat format = FormatCache.getIntegerFormat();
             format.setGroupingUsed(text.contains(","));
+            if (text.startsWith("0")) {
+                format.setMinimumIntegerDigits(text.length());
+            }
             return format.format(value);
         }
     },
@@ -69,7 +65,7 @@ enum TokenType {
             // numbers which is annoying but we'll deal with it here.
             // If it looks like 23.1k or 23k then desired precision is 2.
             int precision = fractionalSeparator < 0 ?
-                    text.length() :
+                    (text.length() > 2 ? text.length() - 1 : text.length()) :
                     text.length() - 2;
             NumberFormat format = FormatCache.getNumberFormat();
             format.setMinimumFractionDigits(precision);

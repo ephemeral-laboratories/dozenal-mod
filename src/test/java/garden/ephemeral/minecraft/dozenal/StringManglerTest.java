@@ -39,9 +39,12 @@ public class StringManglerTest {
                 arguments("23K", "1;14q"),
                 arguments("23.2k", "1;15q"),
                 arguments("23M", "7;85h"),
+                arguments("23MB", "7;85hB"),
                 arguments("23.4M", "7;↊0h"),
                 arguments("23G", "4;56e"),
-                arguments("23.6G", "4;6↋e")
+                arguments("23.6G", "4;6↋e"),
+                arguments("256MB", "7;19sB"),
+                arguments("1024MB", "2;46↋oB")
         );
     }
 
@@ -57,11 +60,9 @@ public class StringManglerTest {
                 arguments("Minecraft 1.15.2 (MOD_DEV/forge)", "Minecraft 1.15.2 (MOD_DEV/forge)"),
                 arguments("19 fps T: 120 vsync fancy-clouds B:2", "17 fps T: ↊0 vsync fancy-clouds B:2"),
                 arguments("Integrated server @ 13 ms ticks, 2 tx, 748 rx", "Integrated server @ 11 ms ticks, 2 tx, 524 rx"),
-                // XXX: Not sure about this one.
-                //arguments("C: 309/10000 (s) D: 12, pC: 000, pU: 04, aB: 05", "C:  309/10000 (s) D: 10, pC: 000, pU: 04, aB: 05"),
+                arguments("C: 309/10000 (s) D: 12, pC: 000, pU: 04, aB: 05", "C: 219/5954 (s) D: 10, pC: 000, pU: 04, aB: 05"),
                 arguments("E: 33/102, B: 0", "E: 29/86, B: 0"),
-                // XXX: Not sure about this one.
-                //arguments("P: 217. T: 102", "P: 217. T: 102")
+                arguments("P: 217. T: 102", "P: 161. T: 86"),
                 arguments("Client Chunk Cache: 841, 550", "Client Chunk Cache: 5↊1, 39↊"),
                 arguments("ServerChunkCache: 2458", "ServerChunkCache: 150↊"),
                 arguments("minecraft:overworld FC: 0", "minecraft:overworld FC: 0"),
@@ -78,14 +79,18 @@ public class StringManglerTest {
                 arguments("Looking at liquid: -244 62 159", "Looking at liquid: -184 52 113"),
                 arguments("Sounds: 2/247 + 1/8", "Sounds: 2/187 + 1/8"),
                 arguments("For help: press F3 + Q", "For help: press F3 + Q"),
-                arguments("Java: 1.8.0_241 64bit", "Java: 1.8.0_241 64bit")
-                // XXX: Not sure about this one.
+                arguments("Java: 1.8.0_241 64bit", "Java: 1.8.0_241 54bit"),
+                // This 2532/7268MB ends up being trouble. How to identify that the left
+                // part should be treated as the same units?
                 //arguments("Mem: 34% 2532/7268MB", "Mem: 41% 2532/7268MB"),
-                //arguments("Allocated: 49% 3612MB", "Allocated: 49% 3612MB"),
-                //arguments("CPU: 8x Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz", "CPU: 8x Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz"),
-//                arguments("Display: 854x480 (NVIDIA Corporation)", "Display: 854x480 (NVIDIA Corporation)"),
-//                arguments("GeForce GTX 1080 Ti/PCIe/SSE2", "GeForce GTX 1080 Ti/PCIe/SSE2"),
-//                arguments("4.6.0 NVIDIA 451.67", "4.6.0 NVIDIA 451.67"),
+                arguments("Allocated: 49% 3612MB", "Allocated: 5↋% 8;498oB"),
+                arguments("CPU: 8x Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz", "CPU: 8x Intel(R) Core(TM) i7-7700K CPU @ 9;93oHz"),
+                arguments("Display: 854x480 (NVIDIA Corporation)", "Display: 5↋2x340 (NVIDIA Corporation)"),
+                // I think you just have to accept this sort of thing if marketing is going
+                // to straight-up put a space between the prefix and the number.
+                // Thanks NVIDIA.
+                arguments("GeForce GTX 1080 Ti/PCIe/SSE2", "GeForce GTX 760 Ti/PCIe/SSE2"),
+                arguments("4.6.0 NVIDIA 451.67", "4.6.0 NVIDIA 317;80")
         );
     }
 
