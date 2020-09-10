@@ -1,6 +1,6 @@
 package garden.ephemeral.minecraft.dozenal.mixins;
 
-import garden.ephemeral.minecraft.dozenal.CachingMangler;
+import garden.ephemeral.minecraft.dozenal.*;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.text.ITextProperties;
@@ -10,7 +10,11 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(FontRenderer.class)
 public class MixinFontRenderer {
-    private final CachingMangler cachingMangler = new CachingMangler();
+    private final Mangler<String> stringMangler = new StringMangler();
+    private final Mangler<ITextProperties> textPropertiesMangler =
+            new TextPropertiesMangler(stringMangler);
+    private final Mangler<IReorderingProcessor> reorderingProcessorMangler =
+            new ReorderingProcessorMangler(stringMangler);
 
     @ModifyVariable(
             method = {
@@ -21,7 +25,7 @@ public class MixinFontRenderer {
             at = @At("HEAD"),
             ordinal = 0)
     public String mangleString(String input) {
-        return cachingMangler.mangle(input);
+        return stringMangler.mangle(input);
     }
 
     @ModifyVariable(
@@ -32,7 +36,7 @@ public class MixinFontRenderer {
             at = @At("HEAD"),
             ordinal = 0)
     public ITextProperties mangleTextProperties(ITextProperties input) {
-        return cachingMangler.mangle(input);
+        return textPropertiesMangler.mangle(input);
     }
 
     @ModifyVariable(
@@ -46,6 +50,6 @@ public class MixinFontRenderer {
             at = @At("HEAD"),
             ordinal = 0)
     public IReorderingProcessor mangleReorderingProcessor(IReorderingProcessor input) {
-        return cachingMangler.mangle(input);
+        return reorderingProcessorMangler.mangle(input);
     }
 }

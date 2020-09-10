@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 /**
  * Mangles numeric values in strings into base 12.
  */
-public class StringMangler {
+public class StringMangler extends Mangler<String> {
     private final StringScanner scanner = new StringScanner();
 
-    public String mangle(String input) {
+    @Override
+    protected String doMangle(String input) {
         ImmutableList<Token> tokens = scanner.scan(input);
         return tokens.stream()
                 .map(this::mangleToken)

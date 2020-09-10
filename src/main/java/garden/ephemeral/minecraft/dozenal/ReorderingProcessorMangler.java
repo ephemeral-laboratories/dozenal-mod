@@ -7,14 +7,15 @@ import net.minecraft.util.text.Style;
 
 import javax.annotation.Nonnull;
 
-public class ReorderingProcessorMangler {
-    private final CachingMangler cachingMangler;
+public class ReorderingProcessorMangler extends Mangler<IReorderingProcessor> {
+    private final Mangler<String> stringMangler;
 
-    public ReorderingProcessorMangler(CachingMangler cachingMangler) {
-        this.cachingMangler = cachingMangler;
+    public ReorderingProcessorMangler(Mangler<String> stringMangler) {
+        this.stringMangler = stringMangler;
     }
 
-    public IReorderingProcessor mangle(IReorderingProcessor input) {
+    @Override
+    protected IReorderingProcessor doMangle(IReorderingProcessor input) {
         return new MangledReorderingProcessor(input);
     }
 
@@ -46,7 +47,7 @@ public class ReorderingProcessorMangler {
 
         private void appendCurrentTextRun() {
             if (currentTextRun.length() > 0) {
-                String text = cachingMangler.mangle(currentTextRun.toString());
+                String text = stringMangler.mangle(currentTextRun.toString());
                 runs.add(IReorderingProcessor.func_242239_a(text, currentStyle));
                 currentTextRun.setLength(0);
             }

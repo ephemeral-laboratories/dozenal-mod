@@ -18,7 +18,7 @@ public class ReorderingProcessorManglerTest {
         input.append(new StringTextComponent("Line 1: "));
         input.append(new StringTextComponent("1.6 Damage").modifyStyle(s -> s.setBold(true)));
 
-        ReorderingProcessorMangler mangler = new ReorderingProcessorMangler(new CachingMangler());
+        ReorderingProcessorMangler mangler = new ReorderingProcessorMangler(new StringMangler());
         IReorderingProcessor output = mangler.mangle(input.func_241878_f());
 
         List<Style> stylesSeen = new ArrayList<>();

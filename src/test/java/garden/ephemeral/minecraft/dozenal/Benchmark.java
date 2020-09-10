@@ -17,15 +17,6 @@ public class Benchmark {
             });
         });
 
-        CachingMangler cachingMangler = new CachingMangler();
-        time("Caching mangler", () -> {
-            StringManglerTest.realExamples().forEach(arguments -> {
-                String input = (String) arguments.get()[0];
-                String result = cachingMangler.mangle(input);
-                mixer += result.hashCode();
-            });
-        });
-
         System.out.println("Ignore this: " + mixer);
     }
 

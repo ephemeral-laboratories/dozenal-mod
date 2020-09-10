@@ -19,7 +19,7 @@ public class TextPropertiesManglerTest {
                 ITextProperties.func_240652_a_("Line 1"),
                 ITextProperties.func_240653_a_("1.6 Damage", Style.EMPTY.setBold(true)));
 
-        TextPropertiesMangler mangler = new TextPropertiesMangler(new CachingMangler());
+        TextPropertiesMangler mangler = new TextPropertiesMangler(new StringMangler());
         ITextProperties output = mangler.mangle(input);
 
         {

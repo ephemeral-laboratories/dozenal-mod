@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringScanner {
+class StringScanner {
     private final Pattern target = Pattern.compile("(?<![._\\-\\d])" +
             "-?" +
             "\\d+" +
@@ -18,7 +18,7 @@ public class StringScanner {
             ")",
             Pattern.COMMENTS);
 
-    public ImmutableList<Token> scan(String input) {
+    ImmutableList<Token> scan(String input) {
         ImmutableList.Builder<Token> builder = ImmutableList.builder();
 
         Matcher matcher = target.matcher(input);
