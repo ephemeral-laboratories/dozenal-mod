@@ -5,25 +5,25 @@ import javax.annotation.concurrent.Immutable;
 import java.util.Objects;
 
 @Immutable
-public class Token {
+class Token {
     @Nonnull
     private final TokenType type;
 
     @Nonnull
     private final String text;
 
-    public Token(@Nonnull TokenType type, @Nonnull String text) {
+    Token(@Nonnull TokenType type, @Nonnull String text) {
         this.type = type;
         this.text = text;
     }
 
     @Nonnull
-    public TokenType getType() {
+    TokenType getType() {
         return type;
     }
 
     @Nonnull
-    public String getText() {
+    String getText() {
         return text;
     }
 
