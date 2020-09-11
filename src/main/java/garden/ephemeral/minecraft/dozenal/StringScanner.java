@@ -7,11 +7,11 @@ import java.util.regex.Pattern;
 class StringScanner {
     private final Pattern target = Pattern.compile("(?<![._\\-\\d])" +
             "-?" +
-            "\\d+(?:,\\d+)*" +
+            "(?<integerPart>\\d+(?:,\\d+)*)" +
             "(" +
-            "(?<fraction>\\.\\d+)?" +
+            "(?<fractionalPart>\\.\\d+)?" +
             "(?<suffix>[kKMG%])?" +
-            "(?![.,_\\-\\d])" +
+            "(?![._\\-\\d])" +
             "|" +
             "(?![_\\-\\d])" +
             ")",
@@ -33,7 +33,7 @@ class StringScanner {
     }
 
     private TokenType categoriseToken(Matcher matcher) {
-        String fraction = matcher.group("fraction");
+        String fraction = matcher.group("fractionalPart");
         String suffix = matcher.group("suffix");
         if (suffix == null) {
             if (fraction == null) {
