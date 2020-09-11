@@ -7,11 +7,11 @@ import java.util.regex.Pattern;
 class StringScanner {
     private final Pattern target = Pattern.compile("(?<![._\\-\\d])" +
             "-?" +
-            "\\d+" +
+            "\\d+(?:,\\d+)*" +
             "(" +
             "(?<fraction>\\.\\d+)?" +
             "(?<suffix>[kKMG%])?" +
-            "(?![._\\-\\d])" +
+            "(?![.,_\\-\\d])" +
             "|" +
             "(?![_\\-\\d])" +
             ")",

@@ -19,7 +19,9 @@ public class StringManglerTest {
                 arguments("23", "1↋"),
                 arguments("23.0", "1↋;0"),
                 arguments("23%", "29%"),
-                arguments("23.0%", "29;1%")
+                arguments("23.0%", "29;1%"),
+                arguments("2300", "13↋8"),
+                arguments("2,300", "1,3↋8")
         );
     }
 

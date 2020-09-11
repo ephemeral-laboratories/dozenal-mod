@@ -3,6 +3,7 @@ package garden.ephemeral.minecraft.dozenal;
 import com.google.common.collect.ImmutableMap;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 enum TokenType {
     TEXT {
@@ -15,7 +16,13 @@ enum TokenType {
     NUMBER {
         @Override
         String mangle(String text) {
-            double value = Double.parseDouble(text);
+            double value;
+            try {
+                value = FormatCache.getDecimalNumberFormat().parse(text).doubleValue();
+            } catch (ParseException ignored) {
+                // Fine.
+                return text;
+            }
             int precision = text.length() - text.indexOf(".") - 1;
             NumberFormat format = FormatCache.getNumberFormat();
             format.setMinimumFractionDigits(precision);
@@ -28,7 +35,13 @@ enum TokenType {
     INTEGER {
         @Override
         String mangle(String text) {
-            long value = Long.parseLong(text);
+            long value;
+            try {
+                value = FormatCache.getDecimalIntegerFormat().parse(text).longValue();
+            } catch (ParseException ignored) {
+                // Fine.
+                return text;
+            }
             NumberFormat format = FormatCache.getIntegerFormat();
             format.setGroupingUsed(text.contains(","));
             if (text.startsWith("0")) {
@@ -43,7 +56,14 @@ enum TokenType {
         String mangle(String text) {
             // Chopping off the % sign and then re-dividing to get back the actual ratio.
             text = text.substring(0, text.length() - 1);
-            double value = Double.parseDouble(text) / 100.0;
+            double value;
+            try {
+                value = FormatCache.getDecimalNumberFormat().parse(text).doubleValue();
+            } catch (ParseException ignored) {
+                // Fine.
+                return text;
+            }
+            value /= 100.0;
             int fractionalSeparator = text.indexOf(".");
             int precision = fractionalSeparator < 0 ? 0 :
                     text.length() - fractionalSeparator - 1;
@@ -59,7 +79,14 @@ enum TokenType {
             // Chop units off the end
             String unit = text.substring(text.length() - 1);
             text = text.substring(0, text.length() - 1);
-            double value = Double.parseDouble(text) * SI_MULTIPLIERS.get(unit);
+            double value;
+            try {
+                value = FormatCache.getDecimalNumberFormat().parse(text).doubleValue();
+            } catch (ParseException ignored) {
+                // Fine.
+                return text;
+            }
+            value *= SI_MULTIPLIERS.get(unit);
             int fractionalSeparator = text.indexOf(".");
             // Conventionally many mods chop the .0 off the end of scientific
             // numbers which is annoying but we'll deal with it here.
@@ -109,8 +136,6 @@ enum TokenType {
     };
 
     private static final double LOG_12 = Math.log(12);
-
-
 
     abstract String mangle(String text);
 
