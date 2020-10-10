@@ -6,6 +6,7 @@ import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.text.Style;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ReorderingProcessorMangler extends Mangler<IReorderingProcessor> {
     private final Mangler<String> stringMangler;
@@ -14,8 +15,9 @@ public class ReorderingProcessorMangler extends Mangler<IReorderingProcessor> {
         this.stringMangler = stringMangler;
     }
 
+    @Nonnull
     @Override
-    protected IReorderingProcessor doMangle(IReorderingProcessor input) {
+    protected IReorderingProcessor doMangle(@Nonnull IReorderingProcessor input) {
         return new MangledReorderingProcessor(input);
     }
 
@@ -43,18 +45,21 @@ public class ReorderingProcessorMangler extends Mangler<IReorderingProcessor> {
     private class CoalescingCharacterConsumer implements ICharacterConsumer {
         private final ImmutableList.Builder<IReorderingProcessor> runs = ImmutableList.builder();
         private final StringBuilder currentTextRun = new StringBuilder();
-        private Style currentStyle = null;
+        private @Nullable Style currentStyle = null;
 
         private void appendCurrentTextRun() {
             if (currentTextRun.length() > 0) {
                 String text = stringMangler.mangle(currentTextRun.toString());
+                if (currentStyle == null) {
+                    throw new AssertionError(); // Impossible as text run length is greater than 0
+                }
                 runs.add(IReorderingProcessor.func_242239_a(text, currentStyle));
                 currentTextRun.setLength(0);
             }
         }
 
         @Override
-        public boolean accept(int index, Style style, int codePoint) {
+        public boolean accept(int index, @Nonnull Style style, int codePoint) {
             if (!style.equals(currentStyle)) {
                 appendCurrentTextRun();
                 currentStyle = style;

@@ -2,20 +2,23 @@ package garden.ephemeral.minecraft.dozenal;
 
 import com.google.common.collect.ImmutableMap;
 
+import javax.annotation.Nonnull;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
 enum TokenType {
     TEXT {
         @Override
-        String mangle(String text) {
+        @Nonnull
+        String mangle(@Nonnull String text) {
             return text;
         }
     },
 
     NUMBER {
         @Override
-        String mangle(String text) {
+        @Nonnull
+        String mangle(@Nonnull String text) {
             double value;
             try {
                 value = FormatCache.getDecimalNumberFormat().parse(text).doubleValue();
@@ -34,7 +37,8 @@ enum TokenType {
 
     INTEGER {
         @Override
-        String mangle(String text) {
+        @Nonnull
+        String mangle(@Nonnull String text) {
             long value;
             try {
                 value = FormatCache.getDecimalIntegerFormat().parse(text).longValue();
@@ -53,7 +57,8 @@ enum TokenType {
 
     PERCENTAGE {
         @Override
-        String mangle(String text) {
+        @Nonnull
+        String mangle(@Nonnull String text) {
             // Chopping off the % sign and then re-dividing to get back the actual ratio.
             text = text.substring(0, text.length() - 1);
             double value;
@@ -75,7 +80,8 @@ enum TokenType {
 
     SCIENTIFIC {
         @Override
-        String mangle(String text) {
+        @Nonnull
+        String mangle(@Nonnull String text) {
             // Chop units off the end
             String unit = text.substring(text.length() - 1);
             text = text.substring(0, text.length() - 1);
@@ -109,6 +115,7 @@ enum TokenType {
          * @param exponent the exponent.
          * @return the SDN abbreviation thereof.
          */
+        @Nonnull
         private String exponentSymbolFor(int exponent) {
             StringBuilder builder = new StringBuilder();
             while (exponent > 0) {
@@ -137,6 +144,7 @@ enum TokenType {
 
     private static final double LOG_12 = Math.log(12);
 
-    abstract String mangle(String text);
+    @Nonnull
+    abstract String mangle(@Nonnull String text);
 
 }

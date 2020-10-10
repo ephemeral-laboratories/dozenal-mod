@@ -2,16 +2,22 @@ package garden.ephemeral.minecraft.dozenal;
 
 import garden.ephemeral.dozenal.DozenalNumberFormatProvider;
 
+import javax.annotation.Nonnull;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.spi.NumberFormatProvider;
 import java.util.Locale;
 
 class FormatCache {
+    @Nonnull
     private static final ThreadLocal<NumberFormat> integerFormat;
+    @Nonnull
     private static final ThreadLocal<NumberFormat> numberFormat;
+    @Nonnull
     private static final ThreadLocal<NumberFormat> percentFormat;
+    @Nonnull
     private static final ThreadLocal<NumberFormat> decimalNumberFormat;
+    @Nonnull
     private static final ThreadLocal<NumberFormat> decimalIntegerFormat;
 
     static {
@@ -30,22 +36,27 @@ class FormatCache {
         });
     }
 
+    @Nonnull
     static NumberFormat getIntegerFormat() {
         return integerFormat.get();
     }
 
+    @Nonnull
     static NumberFormat getNumberFormat() {
         return numberFormat.get();
     }
 
+    @Nonnull
     static NumberFormat getPercentFormat() {
         return percentFormat.get();
     }
 
+    @Nonnull
     static NumberFormat getDecimalNumberFormat() {
         return decimalNumberFormat.get();
     }
 
+    @Nonnull
     static NumberFormat getDecimalIntegerFormat() {
         return decimalIntegerFormat.get();
     }

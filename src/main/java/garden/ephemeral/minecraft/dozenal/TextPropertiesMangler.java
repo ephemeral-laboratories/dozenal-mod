@@ -13,8 +13,9 @@ public class TextPropertiesMangler extends Mangler<ITextProperties> {
         this.stringMangler = stringMangler;
     }
 
+    @Nonnull
     @Override
-    public ITextProperties doMangle(ITextProperties input) {
+    public ITextProperties doMangle(@Nonnull ITextProperties input) {
         return new MangledTextProperties(input);
     }
 

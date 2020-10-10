@@ -1,5 +1,6 @@
 package garden.ephemeral.minecraft.dozenal;
 
+import javax.annotation.Nonnull;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +18,7 @@ class StringScanner {
             ")",
             Pattern.COMMENTS);
 
-    void scan(String input, BiConsumer<String, TokenType> consumer) {
+    void scan(@Nonnull String input, @Nonnull BiConsumer<String, TokenType> consumer) {
         Matcher matcher = target.matcher(input);
         int lastEndPosition = 0;
         while (matcher.find(lastEndPosition)) {
@@ -32,7 +33,8 @@ class StringScanner {
         }
     }
 
-    private TokenType categoriseToken(Matcher matcher) {
+    @Nonnull
+    private TokenType categoriseToken(@Nonnull Matcher matcher) {
         String fraction = matcher.group("fractionalPart");
         String suffix = matcher.group("suffix");
         if (suffix == null) {

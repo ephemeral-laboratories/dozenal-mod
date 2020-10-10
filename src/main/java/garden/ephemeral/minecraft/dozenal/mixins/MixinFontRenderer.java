@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import javax.annotation.Nullable;
+
 @Mixin(FontRenderer.class)
 public class MixinFontRenderer {
     private final Mangler<String> stringMangler = new StringMangler();
@@ -24,7 +26,11 @@ public class MixinFontRenderer {
             },
             at = @At("HEAD"),
             ordinal = 0)
-    public String mangleString(String input) {
+    public @Nullable String mangleString(@Nullable String input) {
+        // Wild West, unsure of nullability of the caller.
+        if (input == null) {
+            return null;
+        }
         return stringMangler.mangle(input);
     }
 
@@ -35,7 +41,11 @@ public class MixinFontRenderer {
             },
             at = @At("HEAD"),
             ordinal = 0)
-    public ITextProperties mangleTextProperties(ITextProperties input) {
+    public @Nullable ITextProperties mangleTextProperties(@Nullable ITextProperties input) {
+        // Wild West, unsure of nullability of the caller.
+        if (input == null) {
+            return null;
+        }
         return textPropertiesMangler.mangle(input);
     }
 
@@ -49,7 +59,11 @@ public class MixinFontRenderer {
             },
             at = @At("HEAD"),
             ordinal = 0)
-    public IReorderingProcessor mangleReorderingProcessor(IReorderingProcessor input) {
+    public @Nullable IReorderingProcessor mangleReorderingProcessor(@Nullable IReorderingProcessor input) {
+        // Wild West, unsure of nullability of the caller.
+        if (input == null) {
+            return null;
+        }
         return reorderingProcessorMangler.mangle(input);
     }
 }
