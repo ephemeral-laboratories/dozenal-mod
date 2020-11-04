@@ -48,9 +48,7 @@ enum TokenType {
             }
             NumberFormat format = FormatCache.getIntegerFormat();
             format.setGroupingUsed(text.contains(","));
-            if (text.startsWith("0")) {
-                format.setMinimumIntegerDigits(text.length());
-            }
+            format.setMinimumIntegerDigits(text.startsWith("0") ? text.length() : 0);
             return format.format(value);
         }
     },

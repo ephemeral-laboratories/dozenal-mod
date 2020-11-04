@@ -1,5 +1,6 @@
 package garden.ephemeral.minecraft.dozenal;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -102,5 +103,13 @@ public class StringManglerTest {
         StringMangler mangler = new StringMangler();
         String result = mangler.mangle(input);
         assertThat(result, is(expectedResult));
+    }
+
+    @Test
+    public void testMinimumIntegerDigitsReset() {
+        StringMangler mangler = new StringMangler();
+        assertThat(mangler.mangle("2"), is("2"));
+        assertThat(mangler.mangle("02"), is("02"));
+        assertThat(mangler.mangle("3"), is("3"));
     }
 }
