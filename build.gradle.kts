@@ -48,7 +48,7 @@ tasks.withType<JavaCompile> {
 }
 
 configure<MinecraftExtension> {
-    mappings("snapshot", "20200820-1.16.1")
+    mappings("snapshot", "20201028-1.16.3")
 
     // Default run configurations.
     runs {
@@ -84,12 +84,12 @@ configure<MixinExtension> {
 }
 
 dependencies {
-    "minecraft"("net.minecraftforge:forge:1.16.2-33.0.10")
+    "minecraft"("net.minecraftforge:forge:1.16.3-34.1.0")
 
-    "implementation"("org.spongepowered:mixin:0.8")
+    "implementation"("org.spongepowered:mixin:0.8.1")
     "shade"("garden.ephemeral.dozenal:dozenal:1.0.2")
 
-    "testImplementation"("org.junit.jupiter:junit-jupiter:5.6.2")
+    "testImplementation"("org.junit.jupiter:junit-jupiter:5.7.0")
     "testImplementation"("org.hamcrest:hamcrest:2.2")
 }
 

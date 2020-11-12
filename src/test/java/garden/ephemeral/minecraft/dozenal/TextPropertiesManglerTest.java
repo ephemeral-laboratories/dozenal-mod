@@ -25,7 +25,7 @@ public class TextPropertiesManglerTest {
         {
             List<String> textSeen = new ArrayList<>();
 
-            output.func_230438_a_(text -> {
+            output.getComponent(text -> {
                 textSeen.add(text);
                 return Optional.empty();
             });
@@ -39,7 +39,7 @@ public class TextPropertiesManglerTest {
             List<Style> stylesSeen = new ArrayList<>();
             List<String> textSeen = new ArrayList<>();
 
-            output.func_230439_a_((ITextProperties.IStyledTextAcceptor<Void>) (style, text) -> {
+            output.getComponentWithStyle((ITextProperties.IStyledTextAcceptor<Void>) (style, text) -> {
                 stylesSeen.add(style);
                 textSeen.add(text);
                 return Optional.empty();

@@ -36,8 +36,7 @@ public class MixinFontRenderer {
 
     @ModifyVariable(
             method = {
-                    // getStringWidth(ITextProperties)
-                    "func_238414_a_(Lnet/minecraft/util/text/ITextProperties;)I",
+                    "getStringPropertyWidth(Lnet/minecraft/util/text/ITextProperties;)I",
             },
             at = @At("HEAD"),
             ordinal = 0)

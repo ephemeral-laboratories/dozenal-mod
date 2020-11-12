@@ -26,21 +26,19 @@ public class TextPropertiesMangler extends Mangler<ITextProperties> {
             this.input = input;
         }
 
-        // getComponent
         @Nonnull
         @Override
-        public <T> Optional<T> func_230438_a_(@Nonnull ITextAcceptor<T> acceptor) {
-            return input.func_230438_a_(originalString -> {
+        public <T> Optional<T> getComponent(@Nonnull ITextAcceptor<T> acceptor) {
+            return input.getComponent(originalString -> {
                 String mangledString = stringMangler.mangle(originalString);
                 return acceptor.accept(mangledString);
             });
         }
 
-        // getComponentWithStyle
         @Nonnull
         @Override
-        public <T> Optional<T> func_230439_a_(@Nonnull IStyledTextAcceptor<T> acceptor, @Nonnull Style baseStyle) {
-            return input.func_230439_a_((mergedStyle, originalString) -> {
+        public <T> Optional<T> getComponentWithStyle(@Nonnull IStyledTextAcceptor<T> acceptor, @Nonnull Style baseStyle) {
+            return input.getComponentWithStyle((mergedStyle, originalString) -> {
                 String mangledString = stringMangler.mangle(originalString);
                 return acceptor.accept(mergedStyle, mangledString);
             }, baseStyle);

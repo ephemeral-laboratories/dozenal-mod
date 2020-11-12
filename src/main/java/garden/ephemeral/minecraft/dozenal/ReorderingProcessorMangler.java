@@ -53,7 +53,7 @@ public class ReorderingProcessorMangler extends Mangler<IReorderingProcessor> {
                 if (currentStyle == null) {
                     throw new AssertionError(); // Impossible as text run length is greater than 0
                 }
-                runs.add(IReorderingProcessor.func_242239_a(text, currentStyle));
+                runs.add(IReorderingProcessor.fromString(text, currentStyle));
                 currentTextRun.setLength(0);
             }
         }
