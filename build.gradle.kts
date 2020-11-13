@@ -35,7 +35,7 @@ apply(plugin = "net.minecraftforge.gradle")
 apply(plugin = "org.spongepowered.mixin")
 
 group = "garden.ephemeral.minecraft"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
